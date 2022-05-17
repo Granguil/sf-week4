@@ -5,15 +5,17 @@ namespace App\Controller;
 use App\Entity\HouseType;
 use App\Form\HouseTypeType;
 use App\Repository\HouseTypeRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/house/type')]
+#[IsGranted("ROLE_ADMIN")]
 class HouseTypeController extends AbstractController
 {
-    #[Route('/', name: 'app_house_type_index', methods: ['GET'])]
+    #[Route('/index', name: 'app_house_type_index', methods: ['GET'])]
     public function index(HouseTypeRepository $houseTypeRepository): Response
     {
         return $this->render('house_type/index.html.twig', [
@@ -40,7 +42,7 @@ class HouseTypeController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_house_type_show', methods: ['GET'])]
+    #[Route('/details/{id}', name: 'app_house_type_show', methods: ['GET'])]
     public function show(HouseType $houseType): Response
     {
         return $this->render('house_type/show.html.twig', [

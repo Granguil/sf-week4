@@ -2,11 +2,14 @@
 
 namespace App\EventListener;
 
+use App\Entity\HouseType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\ChoiceList\ChoiceList;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -22,8 +25,30 @@ class HouseFormSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            FormEvents::PRE_SUBMIT=> 'onHouseSubmit'
+            FormEvents::PRE_SUBMIT => 'onHouseSubmit',
+            FormEvents::PRE_SET_DATA =>'onEditHouse'
         ];
+    }
+
+    public function onEditHouse(FormEvent $event)
+    {
+        $house = $event->getData();
+        $form = $event->getForm();
+        if($house->getCity()!=null){
+            $form->add("city",TextType::class,[
+                "disabled"=>"disabled"
+            ])
+            ->add('houseType',EntityType::class,[
+                'class' => HouseType::class,
+                'choice_label'=> 'type',
+                'disabled'=>'disabled'])
+            ->add("address",TextType::class,[
+                "disabled"=>"disabled"
+            ])
+            ->add('zipcode',TextType::class,[
+                "disabled"=>"disabled"
+            ]);
+        }
     }
 
     public function onHouseSubmit(FormEvent $event)
@@ -31,18 +56,16 @@ class HouseFormSubscriber implements EventSubscriberInterface
             $house = $event->getData();
             $form = $event->getForm();
     
-            // checks whether the user has chosen to display their email or not.
-            // If the data was submitted previously, the additional value that is
-            // included in the request variables needs to be removed.
+            
             if ($form->has('zipcode') && !$form->has('city')) {
                 $zipcode=$house['zipcode'];
                 $conn = $this->em->getConnection();
                     $sql = '
                     SELECT ville_slug FROM spec_villes_france_free
-                    WHERE ville_code_postal = :code
+                    WHERE ville_code_postal like :code
                     ';
                     $stmt = $conn->prepare($sql);
-                    $resultSet = $stmt->executeQuery(['code' => $zipcode]);
+                    $resultSet = $stmt->executeQuery(['code' => "%".$zipcode."%"]);
 
                     $cities = $resultSet->fetchAllAssociative();
 

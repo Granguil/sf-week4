@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/house')]
+#[IsGranted("ROLE_USER")]
 class HouseController extends AbstractController
 {
     #[Route('/', name: 'app_house_index', methods: ['GET'])]
