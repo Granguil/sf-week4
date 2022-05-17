@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}HouseType index{% endblock %}
+
+{% block body %}
+    <h1>HouseType index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Type</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for house_type in house_types %}
+            <tr>
+                <td>{{ house_type.id }}</td>
+                <td>{{ house_type.type }}</td>
+                <td>
+                    <a href="{{ path('app_house_type_show', {'id': house_type.id}) }}">show</a>
+                    <a href="{{ path('app_house_type_edit', {'id': house_type.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_house_type_new') }}">Create new</a>
+{% endblock %}
