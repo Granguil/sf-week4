@@ -56,6 +56,7 @@ class HouseController extends AbstractController
     #[Route('/{id}/edit', name: 'app_house_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, House $house, HouseRepository $houseRepository): Response
     {
+        $this->denyAccessUnlessGranted('edit', $house);
         $form = $this->createForm(HouseType::class, $house);
         $form->handleRequest($request);
 
@@ -74,6 +75,7 @@ class HouseController extends AbstractController
     #[Route('/{id}', name: 'app_house_delete', methods: ['POST'])]
     public function delete(Request $request, House $house, HouseRepository $houseRepository): Response
     {
+        $this->denyAccessUnlessGranted('edit', $house);
         if ($this->isCsrfTokenValid('delete'.$house->getId(), $request->request->get('_token'))) {
             $houseRepository->remove($house, true);
         }
