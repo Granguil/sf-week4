@@ -1,0 +1,12 @@
+{{ form_start(form) }}
+{{ form_row(form.type) }}
+<ul id="roomLine_container" data-prototype=' {{ form_widget(form.roomLines.vars.prototype) }} <button class="btn remove_bed" type="button" >Remove Bed</button>' data-index="{{form.roomLines|length > 0 ? form.roomLines|last.vars.name +1 : 0}}"></ul>
+{% for roomLine in form.roomLines %}
+	<li>
+		{{form_row(roomLine)}}
+		<button class="btn remove_bed" type="button" class="remove_bed">Remove Bed</button>
+	</li>
+{% endfor %}
+<button class="btn" type="button" id="add_bed">Add Bed</button>
+<button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

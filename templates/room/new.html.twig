@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello RoomController!
+{% endblock %}
+{% block javascripts %}
+	{{parent()}}
+	{{ encore_entry_script_tags('collectionForm') }}
+{% endblock %}
+{% block body %}
+	<h1>Create new Room for the
+		{{house.address}}
+		in
+		{{house.city}}</h1>
+
+	{{ include('room/_form.html.twig') }}
+
+{% endblock %}

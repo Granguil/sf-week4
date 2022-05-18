@@ -18,7 +18,7 @@ class Room
     #[ORM\Column(type: 'string', length: 255)]
     private $type;
 
-    #[ORM\OneToMany(mappedBy: 'room', targetEntity: RoomLine::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'room', targetEntity: RoomLine::class, orphanRemoval: true,cascade:["persist"])]
     private $roomLines;
 
     #[ORM\ManyToOne(targetEntity: House::class, inversedBy: 'rooms')]

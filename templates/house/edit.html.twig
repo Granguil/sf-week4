@@ -1,13 +1,48 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit House{% endblock %}
+{% block title %}Edit House
+{% endblock %}
 
 {% block body %}
-    <h1>Edit House</h1>
+	<h1>Edit House</h1>
+	<div class="row">
+		<div class="mb-3 col-sm-5">
+			<label class="form-label">HouseType</label>
+			<div class="form-control" readonly>{{house.houseType.type}}</div>
+		</div>
+		<div class="mb-3 col-sm-5">
+			<label class="form-label">City</label>
+			<div class="form-control" readonly>{{house.city}}</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="mb-3 col-sm-5">
+			<label class="form-label">Address</label>
+			<div class="form-control" readonly>{{house.address}}</div>
+		</div>
+		<div class="mb-3 col-sm-5">
+			<label class="form-label">Zipcode</label>
+			<div class="form-control" readonly>{{house.zipcode}}</div>
+		</div>
+	</div>
+	{{ include('house/_form.html.twig', {'button_label': 'Update'}) }}
+	{% for room in house.rooms %}
+		<div class="mb-3 col-sm-3">
+			<label class="form-label">Type</label>
+			<div class="form-control" readonly>{{room.type}}</div>
+		</div>
+		<div class="mb-3 col-sm-3">
+			<label class="form-label">Place Number</label>
+			<div class="form-control" readonly>{{room.type}}</div>
+		</div>
+		<button>
+			<a href="{{path('app_edit_room_house', {'house': house.id,'room':room.id})}}">Edit Room</a>
+		</button>
+	{% endfor %}
+	<button>
+		<a href="{{path('app_room_house', {'house': house.id})}}">Add Room</a>
+	</button>
+	<a href="{{ path('app_house_index') }}">back to list</a>
 
-    {{ include('house/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('app_house_index') }}">back to list</a>
-
-    {{ include('house/_delete_form.html.twig') }}
+	{{ include('house/_delete_form.html.twig') }}
 {% endblock %}

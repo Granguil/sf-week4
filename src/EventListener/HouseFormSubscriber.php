@@ -34,20 +34,10 @@ class HouseFormSubscriber implements EventSubscriberInterface
     {
         $house = $event->getData();
         $form = $event->getForm();
-        if($house->getCity()!=null){
-            $form->add("city",TextType::class,[
-                "disabled"=>"disabled"
-            ])
-            ->add('houseType',EntityType::class,[
-                'class' => HouseType::class,
-                'choice_label'=> 'type',
-                'disabled'=>'disabled'])
-            ->add("address",TextType::class,[
-                "disabled"=>"disabled"
-            ])
-            ->add('zipcode',TextType::class,[
-                "disabled"=>"disabled"
-            ]);
+        if($house->getId()!=null){
+            $form->remove('houseType')
+            ->remove("address")
+            ->remove('zipcode');
         }
     }
 
